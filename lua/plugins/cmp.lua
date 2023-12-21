@@ -69,7 +69,3 @@ cmp.setup({
     { name = 'buffer' },
   })
 })
-
--- 配置 coc.nvim
--- vim.cmd(
---   [[autocmd FileType * lua require('cmp').setup.buffer { sources = vim.api.nvim_call_function('coc#sources', {}) } ]])
