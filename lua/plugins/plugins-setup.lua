@@ -48,7 +48,7 @@ local plugins = {
     dependencies = { { 'nvim-lua/plenary.nvim' } } -- requires要改为dependencies
   },
 
-  "fatih/vim-go",
+
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
