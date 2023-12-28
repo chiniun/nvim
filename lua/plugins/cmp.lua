@@ -21,6 +21,7 @@ cmp.setup({
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
+      require('gopls').lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -62,9 +63,11 @@ cmp.setup({
 
   -- 这里重要
   sources = cmp.config.sources({
+
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
+    { name = 'gopls' },
   }, {
     { name = 'buffer' },
   })
