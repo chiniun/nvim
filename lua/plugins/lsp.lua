@@ -1,3 +1,13 @@
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.offsetEncoding = { "utf-8", "utf-16" }
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
+local opts = {
+  capabilities = capabilities,
+}
+
 require("mason").setup({
   ui = {
     icons = {
@@ -8,20 +18,48 @@ require("mason").setup({
   }
 })
 
-require("mason-lspconfig").setup({
-  -- 确保安装，根据需要填写
-  ensure_installed = {
-    "lua_ls",
-    "gopls",
-  },
-})
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lsp = {
+  'lua_ls',
+  'jdtls',
+  'pyright',
+  'volar', -- NOTE: mantually config
+  'gopls',
+  'clangd',
+  'texlab',
+  'html',
+  'texlab',
+  'cmake',
+  'sqlls',
+  'typst_lsp',
+  'bufls',
+  -- 'svls',
+  'rust_analyzer',
+  'eslint',
+};
 
-require("lspconfig").lua_ls.setup {
-  capabilities = capabilities,
+require("mason-lspconfig").setup {
+  ensure_installed = lsp,
 }
 
-require("lspconfig").gopls.setup {
-  capabilities = capabilities,
+for _, v in ipairs(lsp) do
+  require('lspconfig')[v].setup { opts }
+end
+
+require('lspconfig')['volar'].setup {
+  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
 }
+
+-- require('lspsaga').setup()
+-- require('lsp.guard-config')
+
+vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()']])
+
+local notify = vim.notify
+vim.notify = function(msg, ...)
+  if msg:match("warning: multiple different client offset_encodings") then
+    return
+  end
+
+  notify(msg, ...)
+end
